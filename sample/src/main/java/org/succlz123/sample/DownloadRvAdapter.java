@@ -191,7 +191,42 @@ public class DownloadRvAdapter extends RecyclerView.Adapter {
             ((DownloadVH) holder).btn_cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    OkDownloadManager.getInstance(mContext).onCancel(mDownloadList.get(position), listener);
+                    OkDownloadManager.getInstance(mContext).onCancel(mDownloadList.get(position), new OkDownloadEnqueueListener() {
+                        @Override
+                        public void onStart(int id) {
+
+                        }
+
+                        @Override
+                        public void onProgress(int progress, long cacheSize, long totalSize) {
+
+                        }
+
+                        @Override
+                        public void onRestart() {
+
+                        }
+
+                        @Override
+                        public void onPause() {
+
+                        }
+
+                        @Override
+                        public void onFinish() {
+
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
+
+                        @Override
+                        public void onError(OkDownloadError error) {
+
+                        }
+                    });
 
 //                    OkDownloadManager.getInstance(mContext).onCancel(mDownloadList.get(position), new OkDownloadCancelListener() {
 //
