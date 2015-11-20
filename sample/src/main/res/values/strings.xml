@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">okdownload</string>
+    <string name="query_all">Query All</string>
+    <string name="query_by_id">Query By ID</string>
+</resources>
