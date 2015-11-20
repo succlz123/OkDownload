@@ -68,7 +68,8 @@ public class DownloadRvAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof DownloadVH) {
-            ((DownloadVH) holder).tv_download_task.setText("Download Task " + (position + 1) + " : " + mDownloadList.get(position));
+            ((DownloadVH) holder).tv_download_task.setText("Download Task "
+                    + (position + 1) + " : " + mDownloadList.get(position));
 
             final DecimalFormat df = new DecimalFormat("0.00");
 
@@ -170,10 +171,11 @@ public class DownloadRvAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     String filePath = null;
                     File fileDir = mContext.getExternalFilesDir("download");
+                    String cc = mContext.getFilesDir( ).getAbsolutePath();
 
                     if (hasSDCard() && fileDir != null) {
                         //http://stackoverflow.com/questions/27736608/android-failed-to-ensure-directory-when-getexternalfilesdirnull
-                        filePath = fileDir.getAbsolutePath() + File.separator + position + "xx.apk";
+                        filePath = fileDir.getAbsolutePath() + File.separator + position + ".apk";
                     }
 
                     OkDownloadRequest request = new OkDownloadRequest.Builder()
@@ -183,7 +185,6 @@ public class DownloadRvAdapter extends RecyclerView.Adapter {
 
                     ((DownloadVH) holder).btn_start_pause.setEnabled(false);
 
-
                     OkDownloadManager.getInstance(mContext).enqueue(request, listener);
                 }
             });
@@ -191,55 +192,7 @@ public class DownloadRvAdapter extends RecyclerView.Adapter {
             ((DownloadVH) holder).btn_cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    OkDownloadManager.getInstance(mContext).onCancel(mDownloadList.get(position), new OkDownloadEnqueueListener() {
-                        @Override
-                        public void onStart(int id) {
-
-                        }
-
-                        @Override
-                        public void onProgress(int progress, long cacheSize, long totalSize) {
-
-                        }
-
-                        @Override
-                        public void onRestart() {
-
-                        }
-
-                        @Override
-                        public void onPause() {
-
-                        }
-
-                        @Override
-                        public void onFinish() {
-
-                        }
-
-                        @Override
-                        public void onCancel() {
-
-                        }
-
-                        @Override
-                        public void onError(OkDownloadError error) {
-
-                        }
-                    });
-
-//                    OkDownloadManager.getInstance(mContext).onCancel(mDownloadList.get(position), new OkDownloadCancelListener() {
-//
-//                        @Override
-//                        public void onCancel() {
-//
-//                        }
-//
-//                        @Override
-//                        public void onError(OkDownloadError error) {
-//
-//                        }
-//                    });
+                    OkDownloadManager.getInstance(mContext).onCancel(mDownloadList.get(position), listener);
                 }
             });
         }

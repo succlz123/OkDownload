@@ -15,16 +15,10 @@ public class OkDownloadRequest {
     private long startTime;
 
     private long finishTime;
-    /**
-     * Not required
-     */
-//    private long cacheSize;
 
     private long fileSize;
-    /**
-     * Content-Type: text/HTML
-     */
-    private String mimeType;
+
+    private String fileType;
 
     private int status;
 
@@ -41,7 +35,7 @@ public class OkDownloadRequest {
         id = builder.id;
         url = builder.url;
         filePath = builder.filePath;
-        mimeType = builder.mimeType;
+        fileType = builder.fileType;
         title = builder.title;
         description = builder.description;
         okHttpClient = builder.okHttpClient;
@@ -70,14 +64,6 @@ public class OkDownloadRequest {
     public void setUrl(String url) {
         this.url = url;
     }
-
-//    public long getCacheSize() {
-//        return cacheSize;
-//    }
-//
-//    public void setCacheSize(long cacheSize) {
-//        this.cacheSize = cacheSize;
-//    }
 
     public String getFilePath() {
         return filePath;
@@ -111,12 +97,12 @@ public class OkDownloadRequest {
         this.fileSize = fileSize;
     }
 
-    public String getMimeType() {
-        return mimeType;
+    public String getFileType() {
+        return fileType;
     }
 
-    public void setMimeType(String mimeType) {
-        this.mimeType = mimeType;
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 
     public int getStatus() {
@@ -147,7 +133,7 @@ public class OkDownloadRequest {
         private int id;
         private String url;
         private String filePath;
-        private String mimeType;
+        private String fileType;
         private String title;
         private String description;
         private OkHttpClient okHttpClient;
@@ -162,8 +148,8 @@ public class OkDownloadRequest {
             return this;
         }
 
-        public Builder mimeType(String mimeType) {
-            this.mimeType = mimeType;
+        public Builder fileType(String fileType) {
+            this.fileType = fileType;
             return this;
         }
 

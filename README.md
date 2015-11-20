@@ -10,7 +10,7 @@ Gradle:
 compile 'org.succlz123.okdownload:okdownload:0.0.1'
 ```
 
-# How To Use
+# Use
 
 ## Start download
 
@@ -130,11 +130,20 @@ if(requestList.size()>0){
 ## QueryDownloadRequestById
 
 ```
-List<OkDownloadRequest> requestList = OkDownloadManager.getInstance(MainActivity.this).queryById(Integer.valueOf(id));
+List<OkDownloadRequest> requestList = OkDownloadManager.getInstance(this).queryById(Integer.valueOf(id));
 if(requestList.size()>0){
 	doSomethings...
 }
 ```
+
+## Other
+OkDownload wil check the phone remaining memory size,when the phone storage memory is less than 200m,download task will cancel.
+
+# Contact Me
+
+Email: succlz123@gmail.com
+Github: http://github.com/succlz123
+Weibo: http://weibo.com/zzzllzzz
 
 # License
 

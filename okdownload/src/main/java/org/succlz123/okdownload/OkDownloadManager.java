@@ -1,11 +1,14 @@
 package org.succlz123.okdownload;
 
 import android.content.Context;
+import android.os.Environment;
+import android.os.StatFs;
 import android.text.TextUtils;
 import android.webkit.URLUtil;
 
 import com.squareup.okhttp.OkHttpClient;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -146,5 +149,49 @@ public class OkDownloadManager {
 
     private boolean isUrlValid(String url) {
         return URLUtil.isNetworkUrl(url);
+    }
+
+    public static long getAvailableInternalMemorySize() {
+        File path = Environment.getDataDirectory();
+        StatFs stat = new StatFs(path.getPath());
+        long blockSize = stat.getBlockSize();
+        long availableBlocks = stat.getAvailableBlocks();
+        return availableBlocks * blockSize;
+    }
+
+    public static long getTotalInternalMemorySize() {
+        File path = Environment.getDataDirectory();
+        StatFs stat = new StatFs(path.getPath());
+        long blockSize = stat.getBlockSize();
+        long totalBlocks = stat.getBlockCount();
+        return totalBlocks * blockSize;
+    }
+
+    public static boolean hasSDCard() {
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+    }
+
+    public static long getAvailableExternalMemorySize() {
+        if (hasSDCard()) {
+            File path = Environment.getExternalStorageDirectory();
+            StatFs stat = new StatFs(path.getPath());
+            long blockSize = stat.getBlockSize();
+            long availableBlocks = stat.getAvailableBlocks();
+            return availableBlocks * blockSize;
+        } else {
+            return -1;
+        }
+    }
+
+    public static long getTotalExternalMemorySize() {
+        if (hasSDCard()) {
+            File path = Environment.getExternalStorageDirectory();
+            StatFs stat = new StatFs(path.getPath());
+            long blockSize = stat.getBlockSize();
+            long totalBlocks = stat.getBlockCount();
+            return totalBlocks * blockSize;
+        } else {
+            return -1;
+        }
     }
 }

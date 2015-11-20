@@ -119,6 +119,18 @@ public class OkDownloadTask {
                     updateDownloadStatus();
                 }
 
+                if (filePath.startsWith("/data/data/")) {
+                    if (OkDownloadManager.getAvailableInternalMemorySize() - fileLength < 200 * 1024 * 1024) {
+                        listener.onError(new OkDownloadError(OkDownloadError.ANDROID_MEMORY_SIZE_IS_TOO_LOW));
+                        return;
+                    }
+                } else {
+                    if (OkDownloadManager.getAvailableExternalMemorySize() - fileLength < 200 * 1024 * 1024) {
+                        listener.onError(new OkDownloadError(OkDownloadError.ANDROID_MEMORY_SIZE_IS_TOO_LOW));
+                        return;
+                    }
+                }
+
                 byte[] bytes = new byte[2048];
                 int len = 0;
                 long curSize = 0;

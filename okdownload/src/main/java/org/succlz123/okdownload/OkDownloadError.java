@@ -26,6 +26,8 @@ public class OkDownloadError {
 
     public static final int OKHTTP_IO_ERROR = 7;
 
+    public static final int ANDROID_MEMORY_SIZE_IS_TOO_LOW = 8;
+
     public OkDownloadError(int code) {
         this.mCode = code;
         getErrorMessageFromCode(code);
@@ -62,14 +64,16 @@ public class OkDownloadError {
                 setMessage("the download request is complete!");
                 break;
             case OKHTTP_ONRESPONSE_FAIL:
-                setMessage("the okHttp onResponse fail!");
+                setMessage("okHttp onResponse fail!");
                 break;
             case OKHTTP_ONFAILURE:
-                setMessage("the okHttp onFailure!");
+                setMessage("okHttp onFailure!");
                 break;
             case OKHTTP_IO_ERROR:
-                setMessage("the okHttp io error!");
+                setMessage("okHttp io error!");
                 break;
+            case ANDROID_MEMORY_SIZE_IS_TOO_LOW:
+                setMessage("android storage memory size is too low");
             default:
                 setMessage("unknown error!");
                 break;
