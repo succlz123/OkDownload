@@ -139,6 +139,7 @@ public class DownloadRvAdapter extends RecyclerView.Adapter {
                             ((DownloadVH) holder).tv_download_info.setText("");
                             ((DownloadVH) holder).btn_start_pause.setEnabled(true);
                             ((DownloadVH) holder).btn_start_pause.setText("START");
+                            Toast.makeText(mContext, "onCancel", Toast.LENGTH_SHORT).show();
                         }
                     });
                     ((DownloadVH) holder).proBar_download.setProgress(0);
@@ -214,11 +215,6 @@ public class DownloadRvAdapter extends RecyclerView.Adapter {
         return mDownloadList.size();
     }
 
-    /**
-     * 是否有SDCard
-     *
-     * @return
-     */
     public static boolean hasSDCard() {
         String status = Environment.getExternalStorageState();
 

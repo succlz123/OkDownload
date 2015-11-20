@@ -148,17 +148,17 @@ public class OkDownloadTask {
                         listener.onFinish();
                     }
                 } catch (IOException e) {
-                    listener.onError(new OkDownloadError(OkDownloadError.OKHTTP_IO_ERROR));
+
                 } finally {
                     try {
                         if (in != null) in.close();
                     } catch (IOException e) {
-                        listener.onError(new OkDownloadError(OkDownloadError.OKHTTP_IO_ERROR));
+
                     }
                     try {
                         if (out != null) out.close();
                     } catch (IOException e) {
-                        listener.onError(new OkDownloadError(OkDownloadError.OKHTTP_IO_ERROR));
+
                     }
                 }
             }

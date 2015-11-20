@@ -13,11 +13,5 @@ public interface OkDownloadEnqueueListener extends OkDownloadCancelListener {
 
     void onPause();
 
-    @Override
-    void onCancel();
-
     void onFinish();
-
-    @Override
-    void onError(OkDownloadError error);
 }

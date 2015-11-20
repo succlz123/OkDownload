@@ -73,7 +73,9 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             String id = editText.getText().toString();
                             List<OkDownloadRequest> requestList = OkDownloadManager.getInstance(MainActivity.this).queryById(Integer.valueOf(id));
-                            Toast.makeText(MainActivity.this, "found " + requestList.get(0).getUrl() + " download records in the database", Toast.LENGTH_SHORT).show();
+                            if (requestList.size()>0){
+                                Toast.makeText(MainActivity.this, "found " + requestList.get(0).getUrl() + " download records in the database", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     })
                     .setNegativeButton("Cancel", null)
