@@ -55,7 +55,7 @@ OkDownloadEnqueueListener listener = new OkDownloadEnqueueListener() {
         }
 
         @Override
-        public void onError(final OkDownloadError error) {
+        public void onError(OkDownloadError error) {
             Log.e("OkDownload", error.getMessage());
         }
     };
@@ -82,7 +82,7 @@ onPause();
 ```
 ## Cancel download
 
-Use `OkDownloadEnqueueListener`
+use `OkDownloadEnqueueListener`
 
 ```
 OkDownloadManager.getInstance(mContext).onCancel(url, new okDownloadEnqueueListener() {
@@ -101,7 +101,7 @@ OkDownloadManager.getInstance(mContext).onCancel(url, new okDownloadEnqueueListe
 });
 ```
 
-Use `OkDownloadCancelListener`
+or use `OkDownloadCancelListener`
 
 ```
 OkDownloadManager.getInstance(mContext).onCancel(url), new OkDownloadCancelListener() {
@@ -137,13 +137,13 @@ if(requestList.size()>0){
 ```
 
 ## Other
-OkDownload wil check the phone remaining memory size,when the phone storage memory is less than 200m,download task will cancel.
+OkDownload wil check the phone remaining memory size,when the phone storage memory is less than 100m,download task will not be carried out.
 
 # Contact Me
 
-Email: succlz123@gmail.com
-Github: http://github.com/succlz123
-Weibo: http://weibo.com/zzzllzzz
+Email: succlz123@gmail.com  
+Github: http://github.com/succlz123  
+Weibo: http://weibo.com/zzzllzzz  
 
 # License
 

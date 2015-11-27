@@ -23,16 +23,16 @@ public class OkDownloadTask {
     private static final String TAG = "OkDownloadTask";
 
     private Context mContext;
-    private DatabaseHelp mDatabaseHelp;
+    private OkDatabaseHelp mOkDatabaseHelp;
     private OkHttpClient mOkHttpClient;
     private OkDownloadRequest mOkDownloadRequest;
 
-    public OkDownloadTask(Context context, OkHttpClient okHttpClient, DatabaseHelp databaseHelp) {
+    public OkDownloadTask(Context context, OkHttpClient okHttpClient, OkDatabaseHelp okDatabaseHelp) {
         if (context != null) {
             mContext = context;
-            mDatabaseHelp = databaseHelp;
-            if (mDatabaseHelp == null) {
-                mDatabaseHelp = DatabaseHelp.getInstance(mContext);
+            mOkDatabaseHelp = okDatabaseHelp;
+            if (mOkDatabaseHelp == null) {
+                mOkDatabaseHelp = OkDatabaseHelp.getInstance(mContext);
             }
         }
         if (okHttpClient != null) {
@@ -120,12 +120,12 @@ public class OkDownloadTask {
                 }
 
                 if (filePath.startsWith("/data/data/")) {
-                    if (OkDownloadManager.getAvailableInternalMemorySize() - fileLength < 200 * 1024 * 1024) {
+                    if (OkDownloadManager.getAvailableInternalMemorySize() - fileLength < 100 * 1024 * 1024) {
                         listener.onError(new OkDownloadError(OkDownloadError.ANDROID_MEMORY_SIZE_IS_TOO_LOW));
                         return;
                     }
                 } else {
-                    if (OkDownloadManager.getAvailableExternalMemorySize() - fileLength < 200 * 1024 * 1024) {
+                    if (OkDownloadManager.getAvailableExternalMemorySize() - fileLength < 100 * 1024 * 1024) {
                         listener.onError(new OkDownloadError(OkDownloadError.ANDROID_MEMORY_SIZE_IS_TOO_LOW));
                         return;
                     }
@@ -190,7 +190,7 @@ public class OkDownloadTask {
     public void cancel(String url, OkDownloadCancelListener listener) {
         mOkHttpClient.cancel(url);
 
-        List<OkDownloadRequest> requestList = mDatabaseHelp.execQuery("url", url);
+        List<OkDownloadRequest> requestList = mOkDatabaseHelp.execQuery("url", url);
 
         if (requestList.size() > 0) {
             OkDownloadRequest queryRequest = requestList.get(0);
@@ -200,20 +200,20 @@ public class OkDownloadTask {
             mOkDownloadRequest = queryRequest;
             deleteFile();
         }
-        mDatabaseHelp.execDelete("url", url);
+        mOkDatabaseHelp.execDelete("url", url);
         listener.onCancel();
     }
 
     private void writeDatabase() {
-        mDatabaseHelp.execInsert(mOkDownloadRequest);
+        mOkDatabaseHelp.execInsert(mOkDownloadRequest);
     }
 
     private void updateDatabase() {
-        mDatabaseHelp.execUpdate(mOkDownloadRequest);
+        mOkDatabaseHelp.execUpdate(mOkDownloadRequest);
     }
 
     private void updateDownloadStatus() {
-        mDatabaseHelp.execUpdateDownloadStatus(mOkDownloadRequest);
+        mOkDatabaseHelp.execUpdateDownloadStatus(mOkDownloadRequest);
     }
 
     private void deleteFile() {

@@ -17,10 +17,10 @@ import java.util.List;
 public class OkDownloadManager {
     private static final String TAG = "OkDownloadManager";
 
-    private static OkDownloadManager sInstance;
-    private Context mContext;
+    private static Context sContext;
+    private static OkDatabaseHelp sOkDatabaseHelp;
+
     private OkHttpClient mOkHttpClient;
-    private DatabaseHelp mDatabaseHelp;
     private OkDownloadRequest mOkDownloadRequest;
     private OkDownloadEnqueueListener mOkDownloadEnqueueListener;
     private OkDownloadTask mOkDownloadTask;
@@ -28,22 +28,24 @@ public class OkDownloadManager {
     private OkDownloadManager() {
     }
 
-    private OkDownloadManager(Context context) {
-        if (context != null) {
-            mContext = context.getApplicationContext();
-            mDatabaseHelp = DatabaseHelp.getInstance(mContext);
+    public static OkDownloadManager getInstance(Context context) {
+        if (context == null) {
+            return null;
         }
+        OkDownloadManager instance = HelpHolder.INSTANCE;
+
+        if (sContext == null) {
+            sContext = context.getApplicationContext();
+        }
+        if (sOkDatabaseHelp == null) {
+            sOkDatabaseHelp = OkDatabaseHelp.getInstance(sContext);
+        }
+
+        return instance;
     }
 
-    public static OkDownloadManager getInstance(Context context) {
-        if (sInstance == null) {
-            synchronized (OkDownloadManager.class) {
-                if (sInstance == null) {
-                    return sInstance = new OkDownloadManager(context);
-                }
-            }
-        }
-        return sInstance;
+    private static class HelpHolder {
+        private static final OkDownloadManager INSTANCE = new OkDownloadManager();
     }
 
     public void enqueue(OkDownloadRequest okDownloadRequest, OkDownloadEnqueueListener okDownloadEnqueueListener) {
@@ -62,7 +64,7 @@ public class OkDownloadManager {
             return;
         }
 
-        List<OkDownloadRequest> requestList = mDatabaseHelp.execQuery("url", mOkDownloadRequest.getUrl());
+        List<OkDownloadRequest> requestList = sOkDatabaseHelp.execQuery("url", mOkDownloadRequest.getUrl());
 
         if (requestList.size() > 0) {
             OkDownloadRequest queryRequest = requestList.get(0);
@@ -92,7 +94,7 @@ public class OkDownloadManager {
         }
 
         if (mOkDownloadTask == null) {
-            mOkDownloadTask = new OkDownloadTask(mContext, mOkHttpClient, mDatabaseHelp);
+            mOkDownloadTask = new OkDownloadTask(sContext, mOkHttpClient, sOkDatabaseHelp);
         }
         mOkDownloadTask.start(okDownloadRequest, mOkDownloadEnqueueListener);
     }
@@ -104,7 +106,7 @@ public class OkDownloadManager {
         }
 
         if (mOkDownloadTask == null) {
-            mOkDownloadTask = new OkDownloadTask(mContext, mOkHttpClient, mDatabaseHelp);
+            mOkDownloadTask = new OkDownloadTask(sContext, mOkHttpClient, sOkDatabaseHelp);
         }
 
         mOkDownloadTask.pause(okDownloadRequest, listener);
@@ -117,18 +119,18 @@ public class OkDownloadManager {
         }
 
         if (mOkDownloadTask == null) {
-            mOkDownloadTask = new OkDownloadTask(mContext, mOkHttpClient, mDatabaseHelp);
+            mOkDownloadTask = new OkDownloadTask(sContext, mOkHttpClient, sOkDatabaseHelp);
         }
 
         mOkDownloadTask.cancel(url, listener);
     }
 
     public List<OkDownloadRequest> queryAll() {
-        return mDatabaseHelp.execQueryAll();
+        return sOkDatabaseHelp.execQueryAll();
     }
 
     public List<OkDownloadRequest> queryById(int id) {
-        return mDatabaseHelp.execQuery("id", String.valueOf(id));
+        return sOkDatabaseHelp.execQuery("id", String.valueOf(id));
     }
 
     private boolean isRequestValid() {

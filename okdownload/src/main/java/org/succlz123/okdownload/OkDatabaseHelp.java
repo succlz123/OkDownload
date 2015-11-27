@@ -13,8 +13,8 @@ import java.util.List;
 /**
  * Created by succlz123 on 15/11/19.
  */
-public class DatabaseHelp extends SQLiteOpenHelper {
-    private static final String TAG = "DatabaseHelp";
+public class OkDatabaseHelp extends SQLiteOpenHelper {
+    private static final String TAG = "OkDatabaseHelp";
 
     private static final int VERSION = 1;
     private static final String DB_NAME = "okdownload.db";
@@ -39,16 +39,25 @@ public class DatabaseHelp extends SQLiteOpenHelper {
             + COLUMN_STATUS + " INTEGER"
             + ")";
 
-    private static DatabaseHelp sInstance;
+    private static Context sContext;
 
-    public static synchronized DatabaseHelp getInstance(Context context) {
-        if (sInstance == null) {
-            sInstance = new DatabaseHelp(context, DB_NAME, null, VERSION);
+    public static OkDatabaseHelp getInstance(Context context) {
+        if (context == null) {
+            return null;
         }
-        return sInstance;
+
+        if (sContext == null) {
+            sContext = context;
+        }
+
+        return HelpHolder.INSTANCE;
     }
 
-    private DatabaseHelp(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    private static class HelpHolder {
+        private static final OkDatabaseHelp INSTANCE = new OkDatabaseHelp(sContext, DB_NAME, null, VERSION);
+    }
+
+    private OkDatabaseHelp(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 

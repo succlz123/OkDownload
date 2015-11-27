@@ -171,7 +171,6 @@ public class DownloadRvAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     String filePath = null;
                     File fileDir = mContext.getExternalFilesDir("download");
-                    String cc = mContext.getFilesDir( ).getAbsolutePath();
 
                     if (hasSDCard() && fileDir != null) {
                         //http://stackoverflow.com/questions/27736608/android-failed-to-ensure-directory-when-getexternalfilesdirnull
