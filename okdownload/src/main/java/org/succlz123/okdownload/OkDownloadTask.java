@@ -50,12 +50,11 @@ public class OkDownloadTask {
         mOkDownloadRequest = okDownloadRequest;
 
         final String url = mOkDownloadRequest.getUrl();
-        final String filePath = mOkDownloadRequest.getFilePath();
 
         // get to write to the local file length
         // if the length is equals 0 , no such cached file
         // if the length is greater than 0 is already cached file size
-        final File file = new File(filePath);
+        final File file = new File( mOkDownloadRequest.getFilePath());
         final long range = file.length();
 
         Request.Builder builder = new Request.Builder();
@@ -91,6 +90,7 @@ public class OkDownloadTask {
 
                 InputStream in = null;
                 RandomAccessFile out = null;
+                String filePath = mOkDownloadRequest.getFilePath();
                 long fileLength = mOkDownloadRequest.getFileSize();
 
                 if (fileLength == 0) {
@@ -101,6 +101,22 @@ public class OkDownloadTask {
                         fileLength = Long.valueOf(response.header("Content-Length"));
                         mOkDownloadRequest.setFileSize(fileLength);
                     }
+                    //set file type
+                    if(response.header("Content-Type") != null){
+                        String fileType = response.header("Content-Type");
+                        if(fileType.indexOf("/") > 0){
+                            fileType = fileType.substring(fileType.indexOf("/") + 1);
+                        }
+                        mOkDownloadRequest.setFileType(fileType);
+                        //if filePath has not extention,then add the extention.
+                        if(filePath.indexOf(".") < 1){
+                            filePath = filePath + "." + fileType;
+                            mOkDownloadRequest.setFilePath(filePath);
+                        }
+                    }
+                    //set title as file name.
+                    String fileName = filePath.substring(filePath.lastIndexOf("/")+ 1);
+                    mOkDownloadRequest.setTitle(fileName);
                     writeDatabase();
                     listener.onStart(mOkDownloadRequest.getId());
 
@@ -118,6 +134,8 @@ public class OkDownloadTask {
                     }
                     updateDownloadStatus();
                 }
+
+
 
                 if (filePath.startsWith("/data/data/")) {
                     if (OkDownloadManager.getAvailableInternalMemorySize() - fileLength < 100 * 1024 * 1024) {
